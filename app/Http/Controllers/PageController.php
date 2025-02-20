@@ -24,6 +24,31 @@ class PageController extends Controller
         $count = $soon->count();
         return view('index', ['tours'=>$soon, 'count' => $count]);
     }
+    public function index_sfs (Request $request) {
+        $data = Tour::select('*');
+        if ($request->search != null && $request->search != '') {
+            $data = $data->where('tours.name', 'LIKE', '%'.$request->search.'%');
+         }
+         if ($request->filter != null && $request->filter != '') {
+            if ($request->filter == '1-5') {
+                $data = $data->whereRaw('DATEDIFF(date_end, date_start) BETWEEN ? AND ?', [1, 5]);
+                
+            }
+            else if ($request->filter == '6-9') {
+                $data = $data->whereRaw('DATEDIFF(date_end, date_start) BETWEEN ? AND ?', [6, 9]);
+            }
+            else {
+                $data = $data->whereRaw('DATEDIFF(date_end, date_start) BETWEEN ? AND ?', [10, 15]);
+            }
+         }
+         if ($request->sort != null && $request->sort != '') {
+             $data = $data->orderBy('price', $request->sort);
+         }
+         $data = $data->get();
+         $count = $data->count();
+         return view('index', ['tours'=>$data, 'count' => $count]);
+ 
+    }
     public function login_show () {
         return view('login');
     }
@@ -158,13 +183,14 @@ class PageController extends Controller
     }
 
     public function all_appls () {
-        $soon = Application::selectRaw('applications.*, users.fio')->join('users', 'users.id', '=', 'applications.user_id')->orderBy('created_at', 'DESC')->get();
+        $soon = Application::select('applications.*', 'tours.name as name', 'tours.date_start as date_start', 'tours.date_end as date_end', 'users.fio')->join('tours','tours.id', '=', 'applications.tour_id')->join('users', 'users.id', '=', 'applications.user_id')->orderBy('created_at', 'DESC')->get();
+       
             $count = $soon->count();
             return view('admin/all_appls', ['appls'=>$soon, 'count' => $count]);
     }
 
     public function change_status (Request $request) {
-        if ($request->status == 'отменено') {
+        if ($request->status == 'отменена') {
             Application::where('id', $request->id)->update(['status'=>$request->status, 'admin_text'=>$request->admin_text]);
         }
         else {

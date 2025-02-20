@@ -2,6 +2,20 @@
     margin:0;
     padding:0;
 }
+.form_sfs select, .form_sfs input[type=text] {
+    border: 0.15vmax solid rgb(174, 172, 172);
+    border-radius: 0.4vmax;
+    padding-left: 1%;
+    outline:none;
+    height: 2.8vmax;
+}
+.form_sfs input[type=text] {
+    width: 35vmax;
+    margin-left: 1vmax;
+}
+.form_sfs select {
+    width: 20vmax;
+}
 @font-face {
     font-family: 'RB';
     src: url('../fonts/Rubik-Bold.woff');

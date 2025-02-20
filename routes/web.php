@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
 Route::get('/', [PageController::class , 'index'])->name('index');
+Route::get('/index_sfs', [PageController::class , 'index_sfs'])->name('index_sfs');
+
 
 Route::get('/login', [PageController::class , 'login_show'])->name('login_show');
 
