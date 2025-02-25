@@ -24,6 +24,59 @@ class PageController extends Controller
         $count = $soon->count();
         return view('index', ['tours'=>$soon, 'count' => $count]);
     }
+    public function all_tours () {
+        $soon = Tour::select('*')->get();
+        $count = $soon->count();
+        return view('admin/all_tours', ['tours'=>$soon, 'count' => $count]);
+    }
+    public function create_tour () {
+        return view('admin/create_tour');
+    }
+    public function create_tour_db (Request $request) {
+        $validator = Validator::make($request->all(), [
+            "date_start"=>"required",
+            "date_end"=>"required|after:date_start",
+            'name'=>'required|max:200',
+            'image'=>'required|image',
+            'price'=>'required|numeric',
+            'description'=>'required',
+        ],
+        $messages = [
+            'date_start.required' => 'Не заполнена дата начала',
+            'date_end.required' => 'Не заполнена дата окончания',
+
+            'date_end.after' => 'Дата окончания не может быть раньше даты начала',
+            'name.required'=>'Не заполнено имя',
+           'name.max'=>'Слишком длинное имя',
+
+           'image.required'=>'Не отправлено изображение',
+           'image.image'=>'Неверный формат изображения',
+
+           'price.required'=>'Не заполнена цена',
+           'price.numeric'=>'Неверный формат цены',
+
+           'description.required'=>'Не заполнено описание',
+        ]
+        );
+        if ($validator->fails()) {
+            return back()
+            ->withErrors($validator)
+            ->withInput();
+        }
+        else {
+            $extention = $request->file('image')->getClientOriginalName();
+            $request->file('image')->move(public_path() . '/images', $extention);
+
+            $tour = Tour::create(['name'=>$request->name,
+            'description'=>$request->description,
+            'date_start'=>$request->date_start,
+            'date_end'=>$request->date_end,
+            'image'=>$extention,
+            'price'=>$request->price,]);
+
+            return redirect()->route('all_tours')->withErrors(['message'=>'Вы успешно создали тур!']);
+        }
+    }
     public function index_sfs (Request $request) {
         $data = Tour::select('*');
         if ($request->search != null && $request->search != '') {

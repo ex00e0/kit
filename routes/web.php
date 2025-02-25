@@ -27,6 +27,10 @@ Route::get('/send_appl/{id}', [PageController::class, 'send_appl'])->name('send_
 Route::post('/send_appl_db', [PageController::class, 'send_appl_db'])->name('send_appl_db');
 
 Route::get('/all_appls', [PageController::class, 'all_appls'])->name('all_appls');
+Route::get('/all_tours', [PageController::class, 'all_tours'])->name('all_tours');
+Route::get('/create_tour', [PageController::class, 'create_tour'])->name('create_tour');
+Route::post('/create_tour_db', [PageController::class, 'create_tour_db'])->name('create_tour_db');
+
 Route::post('/change_status', [PageController::class, 'change_status'])->name('change_status');
 
 

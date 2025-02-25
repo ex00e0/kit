@@ -35,6 +35,9 @@
           <a class="nav-link" href="{{route('all_appls')}}">Все заявки</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="{{route('all_tours')}}">Все туры</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="{{route('logout')}}">Выход</a>
         </li>
         @else

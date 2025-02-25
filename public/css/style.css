@@ -16,6 +16,9 @@
 .form_sfs select {
     width: 20vmax;
 }
+.img_admin {
+    width: 5vmax;
+}
 @font-face {
     font-family: 'RB';
     src: url('../fonts/Rubik-Bold.woff');
